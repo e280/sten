@@ -1,9 +1,9 @@
 
-import {Target} from "./target.js"
+import {Writer} from "./writer.js"
 
 declare const Deno: any
 
-export const denoTarget = (): Target => ({
+export const denoWriter = (): Writer => ({
 	stdout: async(items: any[]) => {
 		const line = items.join(" ")
 		await Deno.stdout.write(new TextEncoder().encode(line + "\n"))

@@ -1,7 +1,7 @@
 
-import {Target} from "./target.js"
+import {Writer} from "./writer.js"
 
-export const consoleTarget = (): Target => ({
+export const consoleWriter = (): Writer => ({
 	stdout: async(items: any[]) => console.log(...items),
 	stderr: async(items: any[]) => console.error(...items),
 })

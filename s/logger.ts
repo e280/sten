@@ -1,27 +1,29 @@
 
-import {Target} from "./targets/target.js"
+import {Writer} from "./writers/writer.js"
 import {Shaper} from "./shapers/shaper.js"
-import {denoTarget} from "./targets/deno.js"
-import {nodeTarget} from "./targets/node.js"
+import {autoColors} from "./colors/auto.js"
+import {denoWriter} from "./writers/deno.js"
+import {nodeWriter} from "./writers/node.js"
+import {voidWriter} from "./writers/void.js"
+import {autoWriter} from "./writers/auto.js"
 import {colorless} from "./colors/colorless.js"
-import {consoleTarget} from "./targets/console.js"
-import {isColorSupported} from "./utils/supports.js"
+import {consoleWriter} from "./writers/console.js"
 import {colorful, Colors} from "./colors/colorful.js"
 import {timestampShaper} from "./shapers/timestamp.js"
 
 export class Logger {
-	static targets = {
-		deno: denoTarget,
-		node: nodeTarget,
-		console: consoleTarget,
+	static writers = {
+		auto: autoWriter,
+		void: voidWriter,
+		deno: denoWriter,
+		node: nodeWriter,
+		console: consoleWriter,
 	}
 
 	static colors = {
+		auto: autoColors,
 		colorful: () => colorful,
 		colorless: () => colorless,
-		auto: () => isColorSupported()
-			? colorful
-			: colorless,
 	}
 
 	static shapers = {
@@ -29,19 +31,19 @@ export class Logger {
 	}
 
 	colors: Colors = Logger.colors.auto()
-	target = consoleTarget()
+	writer: Writer = Logger.writers.auto()
 	shapers: Shaper[] = []
 
 	async log(...items: any[]) {
 		for (const transform of this.shapers)
 			items = transform(this).stdout(items)
-		await this.target.stdout(items)
+		await this.writer.stdout(items)
 	}
 
 	async error(...items: any[]) {
 		for (const transform of this.shapers)
 			items = transform(this).stderr(items)
-		await this.target.stderr(items)
+		await this.writer.stderr(items)
 	}
 
 	setColors(colors: Colors) {
@@ -49,8 +51,8 @@ export class Logger {
 		return this
 	}
 
-	setTarget(target: Target) {
-		this.target = target
+	setWriter(writer: Writer) {
+		this.writer = writer
 		return this
 	}
 

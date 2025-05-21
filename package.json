@@ -11,10 +11,12 @@
 		"s"
 	],
 	"scripts": {
-		"build": "tsc",
+		"build": "run-s _clean _tsc",
+		"_tsc": "tsc",
+		"_clean": "rm -rf x",
 		"build-watch": "tsc -w",
-		"test": "node x/example.test.js --verbose",
-		"test-watch": "node --watch x/example.test.js --verbose",
+		"test": "node x/tests.test.js",
+		"test-watch": "node --watch x/tests.test.js",
 		"start": "run-p build-watch test-watch",
 		"count": "find s -path '*/_archive' -prune -o -name '*.ts' -exec wc -l {} +"
 	},
