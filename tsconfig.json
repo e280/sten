@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"rootDir": "s",
+		"outDir": "x",
+		"target": "es2023",
+		"lib": ["es2023", "dom"],
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"sourceMap": true,
+		"declaration": true,
+		"skipLibCheck": true
+	},
+	"include": [
+		"s/**/*.ts",
+		"s/**/*.js"
+	],
+	"exclude": [
+		"s/**/_*"
+	]
+}

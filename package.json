@@ -1,0 +1,40 @@
+{
+	"name": "@e280/sten",
+	"version": "0.0.0-0",
+	"description": "logging library",
+	"license": "MIT",
+	"author": "Chase Moskal <chasemoskal@gmail.com>",
+	"type": "module",
+	"main": "x/index.js",
+	"files": [
+		"x",
+		"s"
+	],
+	"scripts": {
+		"build": "tsc",
+		"build-watch": "tsc -w",
+		"test": "node x/example.test.js --verbose",
+		"test-watch": "node --watch x/example.test.js --verbose",
+		"start": "run-p build-watch test-watch",
+		"count": "find s -path '*/_archive' -prune -o -name '*.ts' -exec wc -l {} +"
+	},
+	"devDependencies": {
+		"@e280/science": "^0.0.4",
+		"@types/node": "^22.15.3",
+		"npm-run-all": "^4.1.5",
+		"typescript": "^5.7.3"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/e280/sten.git"
+	},
+	"bugs": {
+		"url": "https://github.com/e280/sten/issues"
+	},
+	"homepage": "https://github.com/e280/sten#readme",
+	"keywords": [
+		"logging",
+		"logger",
+		"logging utility"
+	]
+}
