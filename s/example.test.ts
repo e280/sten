@@ -32,20 +32,26 @@ await Science.run({
 		}),
 	}),
 
-	"transforms": Science.suite({
+	"shapers": Science.suite({
 		"custom prefix": test(async() => {
 			const mock = new MockTarget()
 			const logger = new Logger()
 				.setTarget(mock)
-				.setPalette(Logger.palettes.plain())
-				.addTransform(() => ({
+				.addShaper(() => ({
 					stdout: items => ["stdout:", ...items],
 					stderr: items => ["stderr:", ...items],
 				}))
+
+			expect(mock.stdout.spy.calls.length).is(0)
+			expect(mock.stderr.spy.calls.length).is(0)
+
 			logger.log("hello world!")
-			console.log(mock.getSpyStdout(0))
 			expect(mock.stdout.spy.calls.length).is(1)
 			expect(mock.getSpyStdout(0)).is("stdout: hello world!")
+
+			logger.error("uh oh")
+			expect(mock.stderr.spy.calls.length).is(1)
+			expect(mock.getSpyStderr(0)).is("stderr: uh oh")
 		}),
 	}),
 })

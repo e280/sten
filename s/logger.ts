@@ -1,44 +1,51 @@
 
 import {Target} from "./targets/target.js"
+import {Shaper} from "./shapers/shaper.js"
+import {denoTarget} from "./targets/deno.js"
 import {nodeTarget} from "./targets/node.js"
-import {Palette} from "./palettes/palette.js"
-import {plainPalette} from "./palettes/plain.js"
+import {colorless} from "./colors/colorless.js"
 import {consoleTarget} from "./targets/console.js"
-import {Transformer} from "./transforms/transform.js"
-import {timestampTransform} from "./transforms/timestamp.js"
+import {isColorSupported} from "./utils/supports.js"
+import {colorful, Colors} from "./colors/colorful.js"
+import {timestampShaper} from "./shapers/timestamp.js"
 
 export class Logger {
-	static palettes = {
-		plain: plainPalette,
-	}
-
 	static targets = {
+		deno: denoTarget,
 		node: nodeTarget,
 		console: consoleTarget,
 	}
 
-	static transforms = {
-		timestamp: timestampTransform,
+	static colors = {
+		colorful: () => colorful,
+		colorless: () => colorless,
+		auto: () => isColorSupported()
+			? colorful
+			: colorless,
 	}
 
-	palette: Palette = {}
+	static shapers = {
+		timestamp: timestampShaper,
+	}
+
+	colors: Colors = Logger.colors.auto()
 	target = consoleTarget()
-	transformers: Transformer[] = []
+	shapers: Shaper[] = []
 
 	log(...items: any[]) {
-		for (const transform of this.transformers)
+		for (const transform of this.shapers)
 			items = transform(this).stdout(items)
 		this.target.stdout(items)
 	}
 
 	error(...items: any[]) {
-		for (const transform of this.transformers)
+		for (const transform of this.shapers)
 			items = transform(this).stderr(items)
 		this.target.stderr(items)
 	}
 
-	setPalette(palette: Palette) {
-		this.palette = palette
+	setColors(colors: Colors) {
+		this.colors = colors
 		return this
 	}
 
@@ -47,8 +54,8 @@ export class Logger {
 		return this
 	}
 
-	addTransform(transformer: Transformer) {
-		this.transformers.push(transformer)
+	addShaper(shaper: Shaper) {
+		this.shapers.push(shaper)
 		return this
 	}
 }

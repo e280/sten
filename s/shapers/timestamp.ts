@@ -1,5 +1,5 @@
 
-import {Transformer} from "./transform.js"
+import {Shaper} from "./shaper.js"
 
 export type TimestampOptions = {
 	now: () => number
@@ -11,7 +11,7 @@ function defaultTimestampOptions(): TimestampOptions {
 	}
 }
 
-export const timestampTransform = (options?: Partial<TimestampOptions>): Transformer => ({palette}) => {
+export const timestampShaper = (options?: Partial<TimestampOptions>): Shaper => () => {
 	const opts = {...defaultTimestampOptions(), ...options}
 	return {
 		stdout: items => [
