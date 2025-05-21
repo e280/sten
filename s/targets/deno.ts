@@ -4,13 +4,13 @@ import {Target} from "./target.js"
 declare const Deno: any
 
 export const denoTarget = (): Target => ({
-	stdout: (items: any[]) => {
+	stdout: async(items: any[]) => {
 		const line = items.join(" ")
-		return Deno.stdout.write(new TextEncoder().encode(line + "\n"))
+		await Deno.stdout.write(new TextEncoder().encode(line + "\n"))
 	},
-	stderr: (items: any[]) => {
+	stderr: async(items: any[]) => {
 		const line = items.join(" ")
-		return Deno.stderr.write(new TextEncoder().encode(line + "\n"))
+		await Deno.stderr.write(new TextEncoder().encode(line + "\n"))
 	},
 })
 

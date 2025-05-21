@@ -16,7 +16,7 @@ await Science.run({
 			const mock = new MockTarget()
 			const logger = new Logger().setTarget(mock)
 			expect(mock.stdout.spy.calls.length).is(0)
-			logger.log("hello world!")
+			await logger.log("hello world!")
 			expect(mock.stdout.spy.calls.length).is(1)
 			expect(mock.getSpyStdout(0)).is("hello world!")
 			expect(mock.stderr.spy.calls.length).is(0)
@@ -25,7 +25,7 @@ await Science.run({
 			const mock = new MockTarget()
 			const logger = new Logger().setTarget(mock)
 			expect(mock.stderr.spy.calls.length).is(0)
-			logger.error("hello world!")
+			await logger.error("hello world!")
 			expect(mock.stderr.spy.calls.length).is(1)
 			expect(mock.getSpyStderr(0)).is("hello world!")
 			expect(mock.stdout.spy.calls.length).is(0)
@@ -45,11 +45,11 @@ await Science.run({
 			expect(mock.stdout.spy.calls.length).is(0)
 			expect(mock.stderr.spy.calls.length).is(0)
 
-			logger.log("hello world!")
+			await logger.log("hello world!")
 			expect(mock.stdout.spy.calls.length).is(1)
 			expect(mock.getSpyStdout(0)).is("stdout: hello world!")
 
-			logger.error("uh oh")
+			await logger.error("uh oh")
 			expect(mock.stderr.spy.calls.length).is(1)
 			expect(mock.getSpyStderr(0)).is("stderr: uh oh")
 		}),

@@ -32,16 +32,16 @@ export class Logger {
 	target = consoleTarget()
 	shapers: Shaper[] = []
 
-	log(...items: any[]) {
+	async log(...items: any[]) {
 		for (const transform of this.shapers)
 			items = transform(this).stdout(items)
-		this.target.stdout(items)
+		await this.target.stdout(items)
 	}
 
-	error(...items: any[]) {
+	async error(...items: any[]) {
 		for (const transform of this.shapers)
 			items = transform(this).stderr(items)
-		this.target.stderr(items)
+		await this.target.stderr(items)
 	}
 
 	setColors(colors: Colors) {

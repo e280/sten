@@ -1,6 +1,6 @@
 
 export type Target = {
-	stdout(items: any[]): void
-	stderr(items: any[]): void
+	stdout(items: any[]): Promise<void>
+	stderr(items: any[]): Promise<void>
 }
 
