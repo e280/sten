@@ -20,19 +20,18 @@
   export const logger = new Logger()
     .setWriter(Logger.writers.auto())
     .setColors(Logger.colors.auto())
+    .addShaper(Logger.shapers.errors())
     .addShaper(Logger.shapers.timestamp())
   ```
-- log a happy message
+- log stuff
   ```ts
   await logger.log("hello world!")
+  await logger.error("bad stuff", new Error("oh no!"))
   ```
-- log an angry message
-  ```ts
-  await logger.error("something bad happened")
-  ```
+  ![](https://i.imgur.com/IYaMhJ7.png)
 
 ### writers
-the logger ultimately emits to stdout or stderr via a logger — the available writers are:
+the logger ultimately emits to stdout or stderr via a writer — the available writers are:
 - `auto` — *(default)* automatically chooses `deno`, `node`, or `console`
 - `console` — outputs to console.log and console.error
 - `node` — outputs to process.stdout and process.stderr
@@ -48,6 +47,7 @@ determines what happens when colors are used — available colors are:
 ### shapers
 a shaper is a fn that transforms the content before it is logged — you can attach any number of shapers, they are executed in order — by default, no shapers are used — the available shapers are:
 - `timestamp` — attaches a timestamp prefix to every message
+- `errors` — displays error objects nicely
 
 <br/>
 

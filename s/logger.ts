@@ -6,6 +6,7 @@ import {denoWriter} from "./writers/deno.js"
 import {nodeWriter} from "./writers/node.js"
 import {voidWriter} from "./writers/void.js"
 import {autoWriter} from "./writers/auto.js"
+import {errorsShaper} from "./shapers/errors.js"
 import {colorless} from "./colors/colorless.js"
 import {consoleWriter} from "./writers/console.js"
 import {colorful, Colors} from "./colors/colorful.js"
@@ -27,6 +28,7 @@ export class Logger {
 	}
 
 	static shapers = {
+		errors: errorsShaper,
 		timestamp: timestampShaper,
 	}
 
