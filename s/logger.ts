@@ -58,8 +58,8 @@ export class Logger {
 		return this
 	}
 
-	addShaper(shaper: Shaper) {
-		this.shapers.push(shaper)
+	addShaper(...shapers: Shaper[]) {
+		this.shapers.push(...shapers)
 		return this
 	}
 }
