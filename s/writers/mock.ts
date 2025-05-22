@@ -1,6 +1,6 @@
 
+import {spy} from "@e280/science"
 import {Writer} from "./writer.js"
-import {spy} from "../utils/spy.js"
 
 export function mockWriter() {
 	return new MockWriter()

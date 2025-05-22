@@ -3,18 +3,22 @@ import {Logger} from "./logger.js"
 import {MockWriter} from "./writers/mock.js"
 import {Science, test, expect} from "@e280/science"
 
+function setup() {
+	const mock = new MockWriter()
+	const logger = new Logger()
+		.setWriter(mock)
+		.setColors(Logger.colors.colorless())
+		.setShaper(Logger.shapers.none())
+	return {logger, mock}
+}
+
 await Science.run({
 	"basics": Science.suite({
-		"create a logger": test(async() => {
-			void new Logger()
-		}),
 		"logger with mock": test(async() => {
-			const mock = new MockWriter()
-			void new Logger().setWriter(mock)
+			void setup()
 		}),
 		"logger stdout": test(async() => {
-			const mock = new MockWriter()
-			const logger = new Logger().setWriter(mock)
+			const {logger, mock} = setup()
 			expect(mock.stdout.spy.calls.length).is(0)
 			await logger.log("hello world!")
 			expect(mock.stdout.spy.calls.length).is(1)
@@ -22,8 +26,7 @@ await Science.run({
 			expect(mock.stderr.spy.calls.length).is(0)
 		}),
 		"logger stderr": test(async() => {
-			const mock = new MockWriter()
-			const logger = new Logger().setWriter(mock)
+			const {logger, mock} = setup()
 			expect(mock.stderr.spy.calls.length).is(0)
 			await logger.error("hello world!")
 			expect(mock.stderr.spy.calls.length).is(1)
@@ -34,13 +37,11 @@ await Science.run({
 
 	"shapers": Science.suite({
 		"custom prefix": test(async() => {
-			const mock = new MockWriter()
-			const logger = new Logger()
-				.setWriter(mock)
-				.addShaper(() => ({
-					stdout: items => ["stdout:", ...items],
-					stderr: items => ["stderr:", ...items],
-				}))
+			const {logger, mock} = setup()
+			logger.setShaper(() => ({
+				stdout: items => ["stdout:", ...items],
+				stderr: items => ["stderr:", ...items],
+			}))
 
 			expect(mock.stdout.spy.calls.length).is(0)
 			expect(mock.stderr.spy.calls.length).is(0)

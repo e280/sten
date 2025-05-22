@@ -1,9 +1,9 @@
 
 import {Colors} from "./colorful.js"
 import {codes} from "./parts/codes.js"
+import {colorFns} from "./parts/color-fns.js"
 
 export const colorless = {
-	none: (s: string) => s,
 	...<{[key in keyof typeof codes]: (s: string) => string}>(
 		Object.fromEntries(
 			Object.entries(codes)
@@ -13,5 +13,6 @@ export const colorless = {
 				])
 		)
 	),
+	...colorFns(),
 } as Colors
 

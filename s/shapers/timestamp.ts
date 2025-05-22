@@ -2,17 +2,20 @@
 import {Shaper} from "./shaper.js"
 
 export type TimestampOptions = {
+	icon: string | undefined
 	now: () => number
 }
 
 function defaultTimestampOptions(): TimestampOptions {
 	return {
+		icon: "🚨",
 		now: () => Date.now(),
 	}
 }
 
-export const timestampShaper = (options?: Partial<TimestampOptions>): Shaper => ({colors}) => {
+export const timestampShaper = (options?: Partial<TimestampOptions>): Shaper => ({colors, theme}) => {
 	const opts = {...defaultTimestampOptions(), ...options}
+	const palette = theme(colors)
 
 	const date = new Date(opts.now())
 
@@ -31,12 +34,12 @@ export const timestampShaper = (options?: Partial<TimestampOptions>): Shaper => 
 
 	return {
 		stdout: items => [
-			colors.blue(stamp),
+			palette.timestamp(stamp),
 			...items,
 		],
 		stderr: items => [
-			colors.red(stamp),
-			"🚨",
+			palette.timestampErr(stamp),
+			...[opts.icon].filter(Boolean),
 			...items,
 		],
 	}

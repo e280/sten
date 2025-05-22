@@ -1,6 +1,17 @@
 
 import {codes} from "./codes.js"
 
+export type ColorFn = (s: string) => string
+
+export const colorFns = () => ({
+	none: (s: string) => s,
+	uncolor,
+	mix,
+	hex,
+	rgb,
+	bgRgb,
+})
+
 export function uncolor(s: string) {
 	return s.replace(
 		/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
@@ -8,7 +19,15 @@ export function uncolor(s: string) {
 	)
 }
 
-export function colorHex(hex: string) {
+export function mix(...colorFns: ColorFn[]) {
+	return (s: string) => {
+		for (const fn of colorFns)
+			s = fn(s)
+		return s
+	}
+}
+
+export function hex(hex: string) {
 	hex = hex.replace(/^#/, "")
 	let bigint: number
 	let r: number
@@ -25,15 +44,15 @@ export function colorHex(hex: string) {
 	r = (bigint >> 16) & 255
 	g = (bigint >> 8) & 255
 	b = bigint & 255
-	return colorRgb(r, g, b)
+	return rgb(r, g, b)
 }
 
-export function colorRgb(r: number, g: number, b: number) {
+export function rgb(r: number, g: number, b: number) {
 	const code = `\u001b[38;2;${r};${g};${b}m`
 	return (s: string) => `${code}${s}${codes.reset}`
 }
 
-export function colorBgRgb(r: number, g: number, b: number) {
+export function bgRgb(r: number, g: number, b: number) {
 	const code = `\u001b[48;2;${r};${g};${b}m`
 	return (s: string) => `${code}${s}${codes.reset}`
 }

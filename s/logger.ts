@@ -1,16 +1,21 @@
 
+import {Theme} from "./themes/theme.js"
 import {Writer} from "./writers/writer.js"
-import {Shaper} from "./shapers/shaper.js"
+import {autoTheme} from "./themes/auto.js"
 import {autoColors} from "./colors/auto.js"
+import {autoShaper} from "./shapers/auto.js"
+import {autoWriter} from "./writers/auto.js"
+import {basicTheme} from "./themes/basic.js"
 import {denoWriter} from "./writers/deno.js"
 import {nodeWriter} from "./writers/node.js"
 import {voidWriter} from "./writers/void.js"
-import {autoWriter} from "./writers/auto.js"
-import {errorsShaper} from "./shapers/errors.js"
+import {noneShaper} from "./shapers/none.js"
 import {colorless} from "./colors/colorless.js"
+import {errorsShaper} from "./shapers/errors.js"
 import {consoleWriter} from "./writers/console.js"
 import {colorful, Colors} from "./colors/colorful.js"
 import {timestampShaper} from "./shapers/timestamp.js"
+import {combineShapers, Shaper} from "./shapers/shaper.js"
 
 export class Logger {
 	static writers = {
@@ -27,30 +32,33 @@ export class Logger {
 		colorless: () => colorless,
 	}
 
+	static themes = {
+		auto: autoTheme,
+		basic: basicTheme,
+	}
+
 	static shapers = {
+		auto: autoShaper,
+		none: noneShaper,
 		errors: errorsShaper,
 		timestamp: timestampShaper,
 	}
 
-	colors: Colors = Logger.colors.auto()
 	writer: Writer = Logger.writers.auto()
-	shapers: Shaper[] = []
+	colors: Colors = Logger.colors.auto()
+	theme: Theme = Logger.themes.auto()
+	shaper: Shaper = Logger.shapers.auto()
 
 	async log(...items: any[]) {
-		for (const transform of this.shapers)
-			items = transform(this).stdout(items)
-		await this.writer.stdout(items)
+		await this.writer.stdout(
+			this.shaper(this).stdout(items)
+		)
 	}
 
 	async error(...items: any[]) {
-		for (const transform of this.shapers)
-			items = transform(this).stderr(items)
-		await this.writer.stderr(items)
-	}
-
-	setColors(colors: Colors) {
-		this.colors = colors
-		return this
+		await this.writer.stderr(
+			this.shaper(this).stderr(items)
+		)
 	}
 
 	setWriter(writer: Writer) {
@@ -58,8 +66,18 @@ export class Logger {
 		return this
 	}
 
-	addShaper(...shapers: Shaper[]) {
-		this.shapers.push(...shapers)
+	setColors(colors: Colors) {
+		this.colors = colors
+		return this
+	}
+
+	setTheme(theme: Theme) {
+		this.theme = theme
+		return this
+	}
+
+	setShaper(...shapers: Shaper[]) {
+		this.shaper = combineShapers(...shapers)
 		return this
 	}
 }

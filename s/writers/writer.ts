@@ -4,3 +4,7 @@ export type Writer = {
 	stderr(items: any[]): Promise<void>
 }
 
+export function asWriter(writer: Writer) {
+	return writer
+}
+

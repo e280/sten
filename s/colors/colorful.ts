@@ -1,10 +1,10 @@
 
 import {codes} from "./parts/codes.js"
+import {colorFns} from "./parts/color-fns.js"
 
 export type Colors = typeof colorful
 
 export const colorful = {
-	none: (s: string) => s,
 	...<{[key in keyof typeof codes]: (s: string) => string}>(
 		Object.fromEntries(
 			Object.entries(codes)
@@ -14,5 +14,6 @@ export const colorful = {
 				])
 		)
 	),
+	...colorFns(),
 }
 

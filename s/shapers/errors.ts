@@ -1,12 +1,17 @@
 
 import {Shaper} from "./shaper.js"
 
-export const errorsShaper = (): Shaper => ({colors}) => {
+export const errorsShaper = (): Shaper => ({colors, theme}) => {
+	const palette = theme(colors)
+
 	function errstring(error: Error) {
 		const stack = error.stack
-			? "\n" + colors.red(error.stack) + "\n"
+			? "\n" + error.stack + "\n"
 			: ""
-		return `${colors.red(error.name + ":")} ${colors.brightRed(error.message)}` + stack
+		return [
+			palette.errName(error.name + ":"),
+			palette.errMessage(error.message),
+		].join(" ") + palette.errStack(stack)
 	}
 
 	function processErrors(item: any) {
@@ -18,7 +23,7 @@ export const errorsShaper = (): Shaper => ({colors}) => {
 	function processAll(item: any) {
 		return (item && item instanceof Error)
 			? errstring(item)
-			: colors.brightRed(item)
+			: palette.errMessage(item)
 	}
 
 	return {
