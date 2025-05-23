@@ -2,7 +2,7 @@
 import {Writer} from "./writer.js"
 
 export const nodeWriter = (): Writer => ({
-	stdout: async(items: any[]) => void process.stdout.write(items.join(" ") + "\n"),
-	stderr: async(items: any[]) => void process.stderr.write(items.join(" ") + "\n"),
+	stdout: async(line: string) => void process.stdout.write(line + "\n"),
+	stderr: async(line: string) => void process.stderr.write(line + "\n"),
 })
 

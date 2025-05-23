@@ -7,17 +7,17 @@ export function mockWriter() {
 }
 
 export class MockWriter implements Writer {
-	stdout = spy((_items: any[]) => {})
-	stderr = spy((_items: any[]) => {})
+	stdout = spy((_line: string) => {})
+	stderr = spy((_line: string) => {})
 
 	getSpyStdout(index: number) {
-		const [items] = this.stdout.spy.args.at(index)!
-		return items.join(" ")
+		const [line] = this.stdout.spy.args.at(index)!
+		return line
 	}
 
 	getSpyStderr(index: number) {
-		const [items] = this.stderr.spy.args.at(index)!
-		return items.join(" ")
+		const [line] = this.stderr.spy.args.at(index)!
+		return line
 	}
 }
 

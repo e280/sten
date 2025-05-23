@@ -51,13 +51,13 @@ export class Logger {
 
 	async log(...items: any[]) {
 		await this.writer.stdout(
-			this.shaper(this).stdout(items)
+			this.shaper(this).stdout(items).join(" ")
 		)
 	}
 
 	async error(...items: any[]) {
 		await this.writer.stderr(
-			this.shaper(this).stderr(items)
+			this.shaper(this).stderr(items).join(" ")
 		)
 	}
 

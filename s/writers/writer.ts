@@ -1,7 +1,7 @@
 
 export type Writer = {
-	stdout(items: any[]): Promise<void>
-	stderr(items: any[]): Promise<void>
+	stdout(line: string): Promise<void>
+	stderr(line: string): Promise<void>
 }
 
 export function asWriter(writer: Writer) {

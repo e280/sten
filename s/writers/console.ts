@@ -2,7 +2,7 @@
 import {Writer} from "./writer.js"
 
 export const consoleWriter = (): Writer => ({
-	stdout: async(items: any[]) => console.log(...items),
-	stderr: async(items: any[]) => console.error(...items),
+	stdout: async line => console.log(line),
+	stderr: async line => console.error(line),
 })
 
