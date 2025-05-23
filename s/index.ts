@@ -1,5 +1,6 @@
 
 export {Logger} from "./logger.js"
+export {autoColors} from "./colors/auto.js"
 export {colorless} from "./colors/colorless.js"
 export {Theme, asTheme} from "./themes/theme.js"
 export {Writer, asWriter} from "./writers/writer.js"
