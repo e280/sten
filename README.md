@@ -23,7 +23,7 @@
   await logger.log("hello world!")
   await logger.error("bad stuff", new Error("oh no!"))
   ```
-  ![](https://i.imgur.com/IYaMhJ7.png)
+  ![](https://i.imgur.com/FeYnEvc.png)
 
 ### customize the logger
 ```ts
