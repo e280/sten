@@ -1,6 +1,6 @@
 {
 	"name": "@e280/sten",
-	"version": "0.0.0-4",
+	"version": "0.0.0-5",
 	"description": "logging library",
 	"license": "MIT",
 	"author": "Chase Moskal <chasemoskal@gmail.com>",
